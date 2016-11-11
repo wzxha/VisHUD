@@ -17,7 +17,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [VisHUD show:@"Waiting..." userInteraction:NO afterDelay:5];
+    
+    [VisHUD show:@"Waiting..." userInteraction:NO afterDelay:3];
 }
 
 
