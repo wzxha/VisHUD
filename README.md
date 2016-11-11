@@ -6,7 +6,7 @@ HUD for iOS 8.
 ![image](https://github.com/Wzxhaha/WZXStorehouse/blob/master/vishud_notitle.gif)
 ![image](https://github.com/Wzxhaha/WZXStorehouse/blob/master/vishud_change.gif)
 
-# Api
+# API
 
 ```objc
 @interface VisHUD : UIView 
