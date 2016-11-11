@@ -8,13 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol VisHUDDelegate <NSObject>
-
-- (void)visHUDDismiss;
-
-@end
-
-@interface VisHUD : UIView <VisHUDDelegate>
+@interface VisHUD : UIView 
 
 + (void)show:(NSString *)text userInteraction:(BOOL)userInteractionEnabled afterDelay:(CGFloat)second;
 
@@ -31,8 +25,4 @@
 @end
 
 
-@interface VisHUDView : UIView
 
-@property (nonatomic, weak) id <VisHUDDelegate> delegate;
-
-@end

@@ -8,11 +8,69 @@
 
 #import "VisHUD.h"
 
+@interface VisHUDView : UIView
+
+@end
+
+@implementation VisHUDView {
+    UIActivityIndicatorView * _indicatorView;
+    UILabel                 * _label;
+    BOOL                      _dismissed;
+}
+
+- (instancetype)init {
+    if (self = [super init]) {
+        self.translatesAutoresizingMaskIntoConstraints = NO;
+    }
+    return self;
+}
+
+- (void)show:(NSString *)text afterDelay:(CGFloat)second {
+    _indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    _indicatorView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addSubview:_indicatorView];
+    
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:_indicatorView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:1 constant:0]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:_indicatorView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:1 constant:0]];
+    
+    if (text) {
+        _label = [UILabel new];
+        _label.font = [UIFont systemFontOfSize:8];
+        _label.text = text;
+        _label.textColor = [UIColor grayColor];
+        _label.numberOfLines = 0;
+        _label.translatesAutoresizingMaskIntoConstraints = NO;
+        [self addSubview:_label];
+        
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:_label attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:1 constant:0]];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:_label attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_indicatorView attribute:NSLayoutAttributeBottom multiplier:1 constant:3]];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:_label attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:100]];
+    }
+    
+    [_indicatorView startAnimating];
+    
+    if (second > 0) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(second * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self dismiss];
+        });
+    }
+}
+
+- (void)dismiss {
+    [self setValue:@(YES) forKey:@"_dismissed"];
+}
+
+@end
+
+//------------------------------------------------------------------------------------------
+
 @implementation VisHUD {
     VisHUDView * _contentView;
 }
 
 static VisHUD * hud = nil;
+
+///MARK: - Open
 
 + (void)show:(NSString *)text userInteraction:(BOOL)userInteractionEnabled afterDelay:(CGFloat)second {
     if ([VisHUD shareHUD]->_contentView) {
@@ -41,6 +99,7 @@ static VisHUD * hud = nil;
     [[VisHUD shareHUD] dismiss];
 }
 
+///MARK: - Private
 
 + (instancetype)shareHUD {
     static dispatch_once_t onceToken;
@@ -68,70 +127,40 @@ static VisHUD * hud = nil;
         self.userInteractionEnabled = userInteractionEnabled;
         
         _contentView = [VisHUDView new];
-        _contentView.delegate = self;
+        [_contentView addObserver:self forKeyPath:@"_dismissed" options:NSKeyValueObservingOptionNew context:nil];
         [self addSubview:_contentView];
-        [_contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.center.equalTo(self);
-        }];
+        
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:_contentView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:1 constant:0]];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:_contentView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:1 constant:0]];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:_contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:0]];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:_contentView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:0]];
 
         SEL selector = NSSelectorFromString(@"show:afterDelay:");
         IMP imp = [_contentView methodForSelector:selector];
         void (*func)(id, SEL, NSString *, CGFloat) = (void *)imp;
         func(_contentView, selector, text, second);
+        
     });
 }
 
 - (void)dismiss {
     dispatch_async(dispatch_get_main_queue(), ^{
+        [_contentView removeObserver:self forKeyPath:@"_dismissed"];
         [_contentView removeFromSuperview];
         _contentView = nil;
-        [self removeFromSuperview];
+        [self removeFromSuperview];        
     });
 }
 
-- (void)easyHUDViewDismiss {
-    [self dismiss];
-}
-
-@end
-
-@implementation VisHUDView {
-    UIActivityIndicatorView * _indicatorView;
-    UILabel                 * _label;
-}
-
-- (void)show:(NSString *)text afterDelay:(CGFloat)second {
-    _indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    [self addSubview:_indicatorView];
-    
-    [_indicatorView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.center.equalTo(self);
-    }];
-    
-    if (text) {
-        _label = [UILabel new];
-        _label.font = [UIFont systemFontOfSize:8];
-        _label.text = text;
-        _label.textColor = [UIColor grayColor];
-        [self addSubview:_label];
-        
-        [_label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.equalTo(self);
-            make.top.equalTo(_indicatorView.mas_bottom).offset(3);
-        }];
+// kvo
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
+    if ([object isEqual:_contentView]) {
+        if ([keyPath isEqualToString:@"_dismissed"]) {
+            if ([change[@"new"] boolValue]) {
+                [self dismiss];
+            }
+        }
     }
-    
-    [_indicatorView startAnimating];
-    
-    if (second > 0) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(second * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self dismiss];
-        });
-    }
-}
-
-- (void)dismiss {
-    [self.delegate visHUDDismiss];
 }
 
 @end
