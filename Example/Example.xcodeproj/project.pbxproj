@@ -15,6 +15,7 @@
 		1E06E4311DD497AE0052EC5C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E06E42F1DD497AE0052EC5C /* LaunchScreen.storyboard */; };
 		1E06E43C1DD497AE0052EC5C /* ExampleUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E06E43B1DD497AE0052EC5C /* ExampleUITests.m */; };
 		1E06E47E1DD59A5D0052EC5C /* VisHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E06E47D1DD59A5D0052EC5C /* VisHUD.m */; };
+		1E86C5881DF697CF00F21E5E /* UIView+VisHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E86C5871DF697CF00F21E5E /* UIView+VisHUD.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +44,8 @@
 		1E06E43D1DD497AE0052EC5C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1E06E47C1DD59A5D0052EC5C /* VisHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VisHUD.h; sourceTree = "<group>"; };
 		1E06E47D1DD59A5D0052EC5C /* VisHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VisHUD.m; sourceTree = "<group>"; };
+		1E86C5861DF697CF00F21E5E /* UIView+VisHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+VisHUD.h"; sourceTree = "<group>"; };
+		1E86C5871DF697CF00F21E5E /* UIView+VisHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+VisHUD.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +123,8 @@
 			children = (
 				1E06E47C1DD59A5D0052EC5C /* VisHUD.h */,
 				1E06E47D1DD59A5D0052EC5C /* VisHUD.m */,
+				1E86C5861DF697CF00F21E5E /* UIView+VisHUD.h */,
+				1E86C5871DF697CF00F21E5E /* UIView+VisHUD.m */,
 			);
 			path = VisHUD;
 			sourceTree = "<group>";
@@ -229,6 +234,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1E06E4291DD497AE0052EC5C /* ViewController.m in Sources */,
+				1E86C5881DF697CF00F21E5E /* UIView+VisHUD.m in Sources */,
 				1E06E4261DD497AE0052EC5C /* AppDelegate.m in Sources */,
 				1E06E47E1DD59A5D0052EC5C /* VisHUD.m in Sources */,
 				1E06E4231DD497AE0052EC5C /* main.m in Sources */,
@@ -428,6 +434,7 @@
 				1E06E4421DD497AE0052EC5C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		1E06E4431DD497AE0052EC5C /* Build configuration list for PBXNativeTarget "ExampleUITests" */ = {
 			isa = XCConfigurationList;
@@ -436,6 +443,7 @@
 				1E06E4451DD497AE0052EC5C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -10,6 +10,8 @@
 
 @interface VisHUDView : UIView
 
+- (void)show:(NSString *)text;
+
 @end
 
 @implementation VisHUDView {
@@ -25,7 +27,7 @@
     return self;
 }
 
-- (void)show:(NSString *)text afterDelay:(CGFloat)second {
+- (void)show:(NSString *)text {
     _indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     _indicatorView.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:_indicatorView];
@@ -48,16 +50,6 @@
     }
     
     [_indicatorView startAnimating];
-    
-    if (second > 0) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(second * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self dismiss];
-        });
-    }
-}
-
-- (void)dismiss {
-    [self setValue:@(YES) forKey:@"_dismissed"];
 }
 
 @end
@@ -66,68 +58,28 @@
 
 @implementation VisHUD {
     VisHUDView * _contentView;
+    __weak UIView * _superView;
 }
 
-static VisHUD * hud = nil;
-
-///MARK: - Open
-
-+ (void)show:(NSString *)text userInteraction:(BOOL)userInteractionEnabled afterDelay:(CGFloat)second {
-    if ([VisHUD shareHUD]->_contentView) {
-        [VisHUD dismiss];
-    }
-    [[VisHUD shareHUD] show:text userInteraction:userInteractionEnabled afterDelay:second];
-}
-
-+ (void)show:(NSString *)text afterDelay:(CGFloat)second {
-    [self show:text userInteraction:NO afterDelay:second];
-}
-
-+ (void)show:(NSString *)text userInteraction:(BOOL)userInteractionEnabled {
-    [self show:text userInteraction:userInteractionEnabled afterDelay:0];
-}
-
-+ (void)show:(NSString *)text {
-    [self show:text userInteraction:NO afterDelay:0];
-}
-
-+ (void)show {
-    [self show:nil userInteraction:NO afterDelay:0];
-}
-
-+ (void)dismiss {
-    [[VisHUD shareHUD] dismiss];
-}
-
-///MARK: - Private
-
-+ (instancetype)shareHUD {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        hud = [VisHUD new];
-    });
-    return hud;
-}
-
-- (instancetype)init {
+- (instancetype)initWithView:(UIView *)superView {
     if (self = [super init]) {
-        [self setUp];
+        _superView = superView;
+        self.translatesAutoresizingMaskIntoConstraints = NO;
     }
     return self;
 }
 
-- (void)setUp {
-    self.frame = [UIScreen mainScreen].bounds;
-}
-
 - (void)show:(NSString *)text userInteraction:(BOOL)userInteractionEnabled afterDelay:(CGFloat)second {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[UIApplication sharedApplication].keyWindow addSubview:self];
+        [_superView addSubview: self];
+        [_superView addConstraint:[NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_superView attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
+        [_superView addConstraint:[NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:_superView attribute:NSLayoutAttributeLeft multiplier:1 constant:0]];
+        [_superView addConstraint:[NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:_superView attribute:NSLayoutAttributeRight multiplier:1 constant:0]];
+        [_superView addConstraint:[NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_superView attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
         
         self.userInteractionEnabled = userInteractionEnabled;
         
         _contentView = [VisHUDView new];
-        [_contentView addObserver:self forKeyPath:@"_dismissed" options:NSKeyValueObservingOptionNew context:nil];
         [self addSubview:_contentView];
         
         [self addConstraint:[NSLayoutConstraint constraintWithItem:_contentView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:1 constant:0]];
@@ -135,32 +87,18 @@ static VisHUD * hud = nil;
         [self addConstraint:[NSLayoutConstraint constraintWithItem:_contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:0]];
         [self addConstraint:[NSLayoutConstraint constraintWithItem:_contentView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:0]];
 
-        SEL selector = NSSelectorFromString(@"show:afterDelay:");
-        IMP imp = [_contentView methodForSelector:selector];
-        void (*func)(id, SEL, NSString *, CGFloat) = (void *)imp;
-        func(_contentView, selector, text, second);
+        [_contentView show:text];
         
+        if (second > 0) {
+            [self performSelector:@selector(dismiss) withObject:nil afterDelay:second];
+        }
     });
 }
 
 - (void)dismiss {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [_contentView removeObserver:self forKeyPath:@"_dismissed"];
-        [_contentView removeFromSuperview];
-        _contentView = nil;
         [self removeFromSuperview];        
     });
-}
-
-// kvo
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
-    if ([object isEqual:_contentView]) {
-        if ([keyPath isEqualToString:@"_dismissed"]) {
-            if ([change[@"new"] boolValue]) {
-                [self dismiss];
-            }
-        }
-    }
 }
 
 @end
