@@ -9,19 +9,18 @@ HUD for iOS 8.
 # API
 
 ```objc
-@interface VisHUD : UIView 
+@interface UIView (VisHUD)
 
-+ (void)show:(NSString *)text userInteraction:(BOOL)userInteractionEnabled afterDelay:(CGFloat)second;
+- (void)vis_show:(NSString *)text userInteraction:(BOOL)userInteractionEnabled afterDelay:(CGFloat)second;
 
-+ (void)show:(NSString *)text userInteraction:(BOOL)userInteractionEnabled;
+- (void)vis_show:(NSString *)text userInteraction:(BOOL)userInteractionEnabled;
 
-+ (void)show:(NSString *)text afterDelay:(CGFloat)second;
+- (void)vis_show:(NSString *)text afterDelay:(CGFloat)second;
 
-+ (void)show:(NSString *)text;
+- (void)vis_show:(NSString *)text;
 
-+ (void)show;
+- (void)vis_show;
 
-+ (void)dismiss;
-
+- (void)vis_dismiss;
 @end
 ```
