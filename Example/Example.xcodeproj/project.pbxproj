@@ -14,8 +14,8 @@
 		1E06E42E1DD497AE0052EC5C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1E06E42D1DD497AE0052EC5C /* Assets.xcassets */; };
 		1E06E4311DD497AE0052EC5C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E06E42F1DD497AE0052EC5C /* LaunchScreen.storyboard */; };
 		1E06E43C1DD497AE0052EC5C /* ExampleUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E06E43B1DD497AE0052EC5C /* ExampleUITests.m */; };
-		1E06E47E1DD59A5D0052EC5C /* VisHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E06E47D1DD59A5D0052EC5C /* VisHUD.m */; };
-		1E86C5881DF697CF00F21E5E /* UIView+VisHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E86C5871DF697CF00F21E5E /* UIView+VisHUD.m */; };
+		1E1B8CA81E07A524009D515D /* UIView+VisHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E1B8CA51E07A524009D515D /* UIView+VisHUD.m */; };
+		1E1B8CA91E07A524009D515D /* VisHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E1B8CA71E07A524009D515D /* VisHUD.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,10 +42,10 @@
 		1E06E4371DD497AE0052EC5C /* ExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E06E43B1DD497AE0052EC5C /* ExampleUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExampleUITests.m; sourceTree = "<group>"; };
 		1E06E43D1DD497AE0052EC5C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1E06E47C1DD59A5D0052EC5C /* VisHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VisHUD.h; sourceTree = "<group>"; };
-		1E06E47D1DD59A5D0052EC5C /* VisHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VisHUD.m; sourceTree = "<group>"; };
-		1E86C5861DF697CF00F21E5E /* UIView+VisHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+VisHUD.h"; sourceTree = "<group>"; };
-		1E86C5871DF697CF00F21E5E /* UIView+VisHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+VisHUD.m"; sourceTree = "<group>"; };
+		1E1B8CA41E07A524009D515D /* UIView+VisHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+VisHUD.h"; sourceTree = "<group>"; };
+		1E1B8CA51E07A524009D515D /* UIView+VisHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+VisHUD.m"; sourceTree = "<group>"; };
+		1E1B8CA61E07A524009D515D /* VisHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VisHUD.h; sourceTree = "<group>"; };
+		1E1B8CA71E07A524009D515D /* VisHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VisHUD.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,7 +87,7 @@
 		1E06E4201DD497AE0052EC5C /* Example */ = {
 			isa = PBXGroup;
 			children = (
-				1E06E47B1DD59A5D0052EC5C /* VisHUD */,
+				1E1B8CA31E07A524009D515D /* VisHUD */,
 				1E06E4241DD497AE0052EC5C /* AppDelegate.h */,
 				1E06E4251DD497AE0052EC5C /* AppDelegate.m */,
 				1E06E4271DD497AE0052EC5C /* ViewController.h */,
@@ -118,15 +118,16 @@
 			path = ExampleUITests;
 			sourceTree = "<group>";
 		};
-		1E06E47B1DD59A5D0052EC5C /* VisHUD */ = {
+		1E1B8CA31E07A524009D515D /* VisHUD */ = {
 			isa = PBXGroup;
 			children = (
-				1E06E47C1DD59A5D0052EC5C /* VisHUD.h */,
-				1E06E47D1DD59A5D0052EC5C /* VisHUD.m */,
-				1E86C5861DF697CF00F21E5E /* UIView+VisHUD.h */,
-				1E86C5871DF697CF00F21E5E /* UIView+VisHUD.m */,
+				1E1B8CA41E07A524009D515D /* UIView+VisHUD.h */,
+				1E1B8CA51E07A524009D515D /* UIView+VisHUD.m */,
+				1E1B8CA61E07A524009D515D /* VisHUD.h */,
+				1E1B8CA71E07A524009D515D /* VisHUD.m */,
 			);
-			path = VisHUD;
+			name = VisHUD;
+			path = ../../VisHUD;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -233,10 +234,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E1B8CA91E07A524009D515D /* VisHUD.m in Sources */,
 				1E06E4291DD497AE0052EC5C /* ViewController.m in Sources */,
-				1E86C5881DF697CF00F21E5E /* UIView+VisHUD.m in Sources */,
+				1E1B8CA81E07A524009D515D /* UIView+VisHUD.m in Sources */,
 				1E06E4261DD497AE0052EC5C /* AppDelegate.m in Sources */,
-				1E06E47E1DD59A5D0052EC5C /* VisHUD.m in Sources */,
 				1E06E4231DD497AE0052EC5C /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

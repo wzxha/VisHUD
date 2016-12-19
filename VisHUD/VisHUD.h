@@ -10,18 +10,11 @@
 
 @interface VisHUD : UIView 
 
-+ (void)show:(NSString *)text userInteraction:(BOOL)userInteractionEnabled afterDelay:(CGFloat)second;
+- (instancetype)initWithView:(UIView *)superView;
 
-+ (void)show:(NSString *)text userInteraction:(BOOL)userInteractionEnabled;
+- (void)show:(NSString *)text userInteraction:(BOOL)userInteractionEnabled afterDelay:(CGFloat)second;
 
-+ (void)show:(NSString *)text afterDelay:(CGFloat)second;
-
-+ (void)show:(NSString *)text;
-
-+ (void)show;
-
-+ (void)dismiss;
-
+- (void)dismiss;
 @end
 
 
